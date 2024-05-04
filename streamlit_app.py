@@ -1,7 +1,7 @@
 import streamlit as st
-from langchain.llms import OpenAI
+#from langchain.llms import OpenAI
 from pathlib import Path
-import hashlib
+#import hashlib
 import google.generativeai as genai
 
 st.title("Langchain App Chat With Doc")
