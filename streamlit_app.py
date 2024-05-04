@@ -43,9 +43,9 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
-convo = model.start_chat(history=[])
+#convo = model.start_chat(history=[])
 #convo.send_message("YOUR_USER_INPUT")
-print(convo.last.text)
+#print(convo.last.text)
 
 def generate_response(input_text):
     #llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
