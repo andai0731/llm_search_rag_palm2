@@ -3,6 +3,15 @@ import streamlit as st
 from pathlib import Path
 #import hashlib
 import google.generativeai as genai
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+API = os.getenv("GOOGLE_API")
+
+
+genai.configure(api_key="YOUR_API_KEY")
 
 st.title("Langchain App Chat With Doc")
 
