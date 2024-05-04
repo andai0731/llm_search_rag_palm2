@@ -43,7 +43,7 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
 
-#convo = model.start_chat(history=[])
+convo = model.start_chat(history=[])
 #convo.send_message("YOUR_USER_INPUT")
 #print(convo.last.text)
 
