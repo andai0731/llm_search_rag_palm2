@@ -1,36 +1,76 @@
 import streamlit as st
 from langchain.llms import OpenAI
+from pathlib import Path
+import hashlib
+import google.generativeai as genai
 
-st.title("🦜🔗 Langchain Quickstart App")
+st.title("Langchain App Chat With Doc")
 
-with st.sidebar:
-    openai_api_key = st.text_input("OpenAI API Key", type="password")
-    "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
+#with st.sidebar:
+#    openai_api_key = st.text_input("OpenAI API Key", type="password")
+#    "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
 
+
+
+# Set up the model
+generation_config = {
+  "temperature": 0.9,
+  "top_p": 1,
+  "top_k": 1,
+  "max_output_tokens": 1024,
+}
+
+safety_settings = [
+  {
+    "category": "HARM_CATEGORY_HARASSMENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_HATE_SPEECH",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+]
+
+model = genai.GenerativeModel(model_name="gemini-1.0-pro",
+                              generation_config=generation_config,
+                              safety_settings=safety_settings)
+
+convo = model.start_chat(history=[])
+#convo.send_message("YOUR_USER_INPUT")
+print(convo.last.text)
 
 def generate_response(input_text):
-    llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    st.info(llm(input_text))
+    #llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
+    convo.send_message(input_text)
+    st.info(convo.last.text)
+    
 
 
 with st.form("my_form"):
     text = st.text_area("Enter text:", "What are 3 key advice for learning how to code?")
     submitted = st.form_submit_button("Submit")
-    if not openai_api_key:
-        st.info("Please add your OpenAI API key to continue.")
-    elif submitted:
-        generate_response(text)
+    #if not openai_api_key:
+    #    st.info("Please add your OpenAI API key to continue.")
+    #elif submitted:
+    #    generate_response(text)
+    if submitted:
+         generate_response(text)
 
 
 
 
 
 
-"""
-"""
-At the command line, only need to run once to install the package via pip:
 
-$ pip install google-generativeai
+
 """
 
 from pathlib import Path
@@ -69,6 +109,7 @@ safety_settings = [
 model = genai.GenerativeModel(model_name="gemini-1.0-pro",
                               generation_config=generation_config,
                               safety_settings=safety_settings)
+
 
 uploaded_files = []
 def upload_if_needed(pathname: str) -> list[str]:
